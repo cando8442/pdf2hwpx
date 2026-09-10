@@ -24,6 +24,7 @@ PDF 안에 글자가 아예 없다. 추출하면 "함수 [빈칸] 의 그래프�
 | `src/tex2hwp.js` | LaTeX → 한글 수식 스크립트. 토크나이저 + 재귀하강 파서 |
 | `src/hwpx.js` | hwpx 조립기. 템플릿 `header.xml`을 물려받고 `section0.xml`만 새로 만든다 |
 | `src/zip.js` | 의존성 없는 zip/unzip (`mimetype`은 첫 엔트리 + 무압축) |
+| `src/figcrop.js` | 그림 잘라내기 보정. 모델 좌표를 실제 잉크 경계로 다시 맞춘다 |
 | `web/` | 배포 디렉터리. `index.html` + `app.js` + `lib/`(src 사본) + `template.js` |
 | `tests/tex2hwp.test.js` | 변환기 정답지 30건 |
 | `tests/build-sample.js` | 조립기 표본 출력 → `out/sample.hwpx` |
@@ -63,6 +64,6 @@ localStorage(`pdf2hwpx.key`)에만 남고 코드에는 들어가지 않는다.
 ## 알려진 한계
 
 - 스캔본·교과서 사진은 정확도가 떨어진다. 깨끗한 벡터 PDF에서 실측 5/5.
-- 그림은 모델이 준 박스 비율로 잘라 넣는다. 어긋나면 삭제하고 한글에서 직접 넣는 편이 빠르다.
+- 그림은 모델이 준 박스를 출발점으로 삼되 실제 픽셀 경계로 보정한다(`src/figcrop.js`). 그래도 어긋나면 검수 화면에서 빼면 된다.
 - 표는 아직 다루지 않는다.
 - 자동 교차검증(재렌더 그림 ↔ 원본 조각 대조)은 미구현.

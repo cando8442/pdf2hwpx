@@ -373,6 +373,18 @@
         var pg = state.pages.filter(function (p) { return p.n === b.page; })[0];
         if (!pg) return Promise.resolve();
         var W = pg.canvas.width, H = pg.canvas.height;
+
+        // 모델이 준 박스는 "이 근처"까지만 맞다. 실제 잉크 경계로 다시 맞춘다.
+        try {
+          var px = pg.canvas.getContext('2d').getImageData(0, 0, W, H).data;
+          var snapped = FigCrop.snap(px, W, H, b.box);
+          b.box = snapped.box;
+          b.fixed = snapped.grew || snapped.shrank;
+          b.grew = snapped.grew;
+        } catch (e) {
+          b.fixed = false;      // 캔버스를 읽지 못하면 모델 좌표를 그대로 쓴다
+        }
+
         var sx = Math.round(b.box[0] * W), sy = Math.round(b.box[1] * H);
         var sw = Math.max(8, Math.round((b.box[2] - b.box[0]) * W));
         var sh = Math.max(8, Math.round((b.box[3] - b.box[1]) * H));
@@ -615,7 +627,8 @@
     var lab = document.createElement('span');
     lab.style.fontSize = '11.5px';
     lab.style.color = 'var(--ink3)';
-    lab.textContent = '그림' + (b.caption ? ' — ' + b.caption : '');
+    lab.textContent = '그림' + (b.caption ? ' — ' + b.caption : '') +
+      (b.grew ? '  (잘린 부분을 찾아 넓힘)' : b.fixed ? '  (여백 정리함)' : '');
     meta.appendChild(lab);
     var sp = document.createElement('span');
     sp.className = 'spacer';

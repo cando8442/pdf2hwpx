@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
-const FILES = ['zip.js', 'eqwidth.js', 'hwpx.js', 'tex2hwp.js'];
+const FILES = ['zip.js', 'eqwidth.js', 'figcrop.js', 'hwpx.js', 'tex2hwp.js'];
 const dst = path.join(ROOT, 'web/lib');
 
 fs.mkdirSync(dst, { recursive: true });
