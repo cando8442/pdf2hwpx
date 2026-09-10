@@ -45,6 +45,7 @@ python -m http.server 8899 --directory web
 ## 배포
 
 Netlify 정적 배포. `netlify.toml`이 `publish = "web"`, 빌드는 `node tools/sync-lib.js`.
+GitHub 저장소에 연결되어 있어 **`git push` 하면 Netlify 가 알아서 새로 배포한다**(1~2분).
 `sync-lib.js`는 `src/`를 `web/lib/`로 복사하면서 script 태그에 `?v=<시각>` 캐시 무효화
 스탬프를 새로 박고 화면 오른쪽 위 버전 표시도 갱신한다. 고친 뒤에도 브라우저가 옛
 스크립트를 계속 쓰는 사고를 막기 위한 것이다.
