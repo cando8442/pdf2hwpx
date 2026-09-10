@@ -29,3 +29,6 @@ secrets.json
 
 # Netlify CLI 로컬 상태 (siteId 가 들어간다)
 .netlify/
+
+# 바로가기가 참조하는 아이콘 사본 (배포본은 web/favicon.ico)
+pdf2hwpx.ico
