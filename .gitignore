@@ -1,0 +1,31 @@
+# 작업 중 생긴 산출물·실험 파일. 저장소에 올리지 않는다.
+# out/ 에는 변환한 실제 학습지와 디버깅용 화면 캡처가 섞여 있어 특히 주의할 것.
+out/
+
+# dorms-check 점검용 web/ 사본 (배포는 web/ 을 쓴다)
+dist/
+
+# 점검 결과·답안. 개인 연락처와 학교 정보가 들어간다.
+.dorms-check/
+dorms-check.config.json
+edzip-answers.json
+
+# 학습지 원본 — 템플릿(sample_output_template.hwpx)만 남기고 본문은 제외한다
+reference/*
+!reference/sample_output_template.hwpx
+
+# OS·편집기
+Thumbs.db
+Desktop.ini
+.DS_Store
+.vscode/
+.idea/
+
+# 혹시라도 키가 담긴 파일이 생기면 막는다
+.env
+.env.*
+*.key
+secrets.json
+
+# Netlify CLI 로컬 상태 (siteId 가 들어간다)
+.netlify/

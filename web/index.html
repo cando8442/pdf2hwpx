@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PDF → 한글(hwpx) 변환기</title>
+<meta name="description" content="수학 학습지 PDF를 한글 네이티브 수식이 살아있는 hwpx 파일로 바꿉니다. 서버 없이 브라우저에서만 동작하며, 변환 결과를 눈으로 대조해 고칠 수 있습니다.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="PDF → 한글(hwpx) 변환기">
+<meta property="og:description" content="수학 학습지 PDF를 한글 네이티브 수식이 살아있는 hwpx 파일로 바꿉니다. 서버 없이 브라우저에서만 동작합니다.">
+<meta property="og:url" content="https://pdf2hwpx.netlify.app/">
+<meta property="og:site_name" content="PDF → 한글(hwpx) 변환기">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f4f5f7; --panel:#ffffff; --line:#e2e5ea; --line2:#eef0f3;
+    --ink:#1a1d21; --ink2:#5b636d; --ink3:#8d959f;
+    --accent:#1f5f8b; --accent-soft:#e8f1f8;
+    --warn:#c0392b; --warn-soft:#fdeeec; --ok:#1e7a49;
+    --radius:10px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font-family:"Noto Sans KR",-apple-system,"Segoe UI",sans-serif;font-size:14px;line-height:1.55}
+  button{font-family:inherit;font-size:13px;cursor:pointer}
+  input,select,textarea{font-family:inherit;font-size:13px}
+
+  header{background:var(--panel);border-bottom:1px solid var(--line);padding:14px 22px;
+         display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:30}
+  header h1{margin:0;font-size:16px;font-weight:700;letter-spacing:-.02em}
+  header .sub{color:var(--ink3);font-size:12px}
+  header .spacer{flex:1}
+
+  .steps{display:flex;gap:6px;align-items:center;font-size:12px;color:var(--ink3)}
+  .steps b{font-weight:500}
+  .steps .on{color:var(--accent);font-weight:700}
+
+  main{max-width:1400px;margin:0 auto;padding:22px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+        padding:18px 20px;margin-bottom:16px}
+  .card h2{margin:0 0 12px;font-size:14px;font-weight:700}
+  .row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end}
+  .field{display:flex;flex-direction:column;gap:5px}
+  .field label{font-size:11.5px;color:var(--ink2);font-weight:500}
+  .field input,.field select{border:1px solid var(--line);border-radius:7px;padding:8px 10px;
+        background:#fff;color:var(--ink);min-width:160px}
+  .field input:focus,.field select:focus{outline:2px solid var(--accent-soft);border-color:var(--accent)}
+  .hint{font-size:11.5px;color:var(--ink3);margin-top:6px}
+
+  .btn{border:1px solid var(--line);background:#fff;border-radius:7px;padding:8px 14px;color:var(--ink)}
+  .btn:hover{background:#f7f8fa}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:500}
+  .btn.primary:hover{background:#18527a}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+  .btn.sm{padding:4px 9px;font-size:12px}
+  .btn.danger{color:var(--warn);border-color:#f0d5d1}
+
+  #drop{border:2px dashed var(--line);border-radius:var(--radius);padding:34px;text-align:center;
+        color:var(--ink2);background:#fbfcfd;transition:.15s}
+  #drop.hot{border-color:var(--accent);background:var(--accent-soft)}
+  #drop strong{display:block;font-size:15px;color:var(--ink);margin-bottom:6px}
+
+  #pages{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+  .thumb{width:92px;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:#fff;
+         position:relative;cursor:pointer}
+  .thumb img{width:100%;display:block}
+  .thumb .n{position:absolute;left:4px;top:4px;background:rgba(0,0,0,.62);color:#fff;
+            font-size:10px;padding:1px 5px;border-radius:4px}
+  .thumb.off{opacity:.35}
+  .thumb.off:after{content:"제외";position:absolute;inset:auto 0 0 0;background:var(--warn);
+            color:#fff;font-size:10px;text-align:center}
+
+  .bar{height:6px;background:var(--line2);border-radius:99px;overflow:hidden;margin:10px 0 6px}
+  .bar i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+  #log{font-size:12px;color:var(--ink2);max-height:150px;overflow:auto;
+       font-family:ui-monospace,Consolas,monospace;white-space:pre-wrap}
+  #log .err{color:var(--warn)}
+
+  /* 검수 화면 */
+  .review{display:grid;grid-template-columns:minmax(320px,1fr) minmax(420px,1.25fr);gap:16px;align-items:start}
+  .pane{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+  .pane .head{padding:10px 14px;border-bottom:1px solid var(--line2);display:flex;gap:10px;
+              align-items:center;font-size:12.5px;font-weight:700;background:#fafbfc}
+  .pane .head .spacer{flex:1}
+  .pane .body{padding:14px}
+  #origWrap{max-height:calc(100vh - 170px);overflow:auto;background:#eceff2;padding:10px}
+  #origWrap img{width:100%;display:block;border:1px solid var(--line);background:#fff}
+  #blocks{max-height:calc(100vh - 170px);overflow:auto}
+
+  .blk{border:1px solid var(--line2);border-radius:8px;padding:10px 12px;margin-bottom:10px;background:#fff}
+  .blk:hover{border-color:var(--line)}
+  .blk .meta{display:flex;gap:6px;align-items:center;margin-bottom:7px}
+  .blk .meta select{border:1px solid var(--line);border-radius:6px;padding:2px 6px;font-size:11.5px;
+                    color:var(--ink2);background:#fbfcfd}
+  .blk .meta .spacer{flex:1}
+  .blk .meta .brk{font-size:11.5px;color:var(--ink2);display:flex;gap:4px;align-items:center}
+  .blk .content{min-height:22px}
+
+  .run{border-radius:4px;padding:1px 2px}
+  .run.t{white-space:pre-wrap}
+  .run.t:focus{outline:2px solid var(--accent-soft);background:#fff}
+  .run.eq{background:var(--accent-soft);cursor:pointer;padding:2px 5px;display:inline-block;
+          border:1px solid #d4e5f0}
+  .run.eq:hover{border-color:var(--accent)}
+  .run.eq.bad{background:var(--warn-soft);border-color:#f0c8c2}
+  .run.s-h1{font-size:19px;font-weight:700}
+  .run.s-h2{font-size:15px;font-weight:700;color:var(--accent)}
+  .run.s-sub{font-size:12px;color:var(--ink2)}
+  .run.s-tag{font-size:11.5px;color:var(--ink3)}
+  .run.s-no{font-weight:700;color:var(--accent)}
+  .run.s-pt{font-size:12px;font-weight:700;color:var(--accent)}
+  .run.s-foot{font-size:11.5px;color:var(--ink3)}
+  .run.s-bold{font-weight:700}
+
+  .eqedit{margin-top:8px;border:1px solid var(--accent);border-radius:7px;padding:9px;background:#fbfdff}
+  .eqedit textarea{width:100%;border:1px solid var(--line);border-radius:6px;padding:7px;
+                   font-family:ui-monospace,Consolas,monospace;font-size:12.5px;resize:vertical;min-height:52px}
+  .eqedit .prev{margin:7px 0;padding:7px;background:#fff;border:1px solid var(--line2);border-radius:6px;
+                min-height:32px;overflow-x:auto}
+  .eqedit .hwp{font-family:ui-monospace,Consolas,monospace;font-size:11.5px;color:var(--ink2);
+               word-break:break-all;background:#f7f8fa;padding:6px;border-radius:5px}
+  .eqedit .warn{color:var(--warn);font-size:11.5px;margin-top:5px}
+  .eqedit .btns{display:flex;gap:6px;margin-top:8px}
+
+  .figblk{display:flex;gap:12px;align-items:flex-start}
+  .figblk img{max-width:190px;border:1px solid var(--line);border-radius:6px;background:#fff}
+  .figblk .fx{display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--ink2)}
+  .figblk input[type=number]{width:66px;border:1px solid var(--line);border-radius:6px;padding:4px 6px}
+
+  .pagemark{font-size:11.5px;color:var(--ink3);text-align:center;margin:14px 0 10px;
+            border-top:1px dashed var(--line);padding-top:8px}
+  .empty{color:var(--ink3);text-align:center;padding:40px 10px}
+  .hidden{display:none!important}
+</style>
+</head>
+<body>
+<header>
+  <h1>PDF → 한글(hwpx) 변환기</h1>
+  <span class="sub">수식을 한글 네이티브 수식으로 되살립니다</span>
+  <span class="spacer"></span>
+  <span class="hint" style="margin:0 10px 0 0">v<span id="ver">202609101027</span></span>
+  <span class="steps">
+    <b id="st1" class="on">① 준비</b><span>›</span>
+    <b id="st2">② 읽기</b><span>›</span>
+    <b id="st3">③ 검수 · 내보내기</b>
+  </span>
+</header>
+
+<main>
+  <section class="card" id="setup">
+    <h2>① 준비</h2>
+    <div class="row">
+      <div class="field">
+        <label for="key">Anthropic API 키</label>
+        <input id="key" type="password" placeholder="sk-ant-..." autocomplete="off" style="min-width:280px">
+      </div>
+      <div class="field">
+        <label for="model">모델</label>
+        <select id="model">
+          <option value="claude-opus-5">Opus 5 — 정확 (권장)</option>
+          <option value="claude-sonnet-5">Sonnet 5 — 저렴</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="dpi">해상도</label>
+        <select id="dpi">
+          <option value="1400">보통 (1400px)</option>
+          <option value="1750" selected>높음 (1750px)</option>
+          <option value="2100">최대 (2100px)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="brk">페이지 구분</label>
+        <select id="brk">
+          <option value="1" selected>원본대로 쪽 나눔</option>
+          <option value="0">이어서 흐르게</option>
+        </select>
+      </div>
+      <button class="btn" id="clearKey">키 지우기</button>
+    </div>
+    <div class="row" style="margin-top:10px;align-items:center">
+      <label style="display:flex;gap:5px;align-items:center;font-size:12.5px;color:var(--ink2)">
+        <input type="checkbox" id="remember" checked> 이 브라우저에 키 기억하기
+      </label>
+      <span id="keyStat" class="hint" style="margin:0"></span>
+    </div>
+    <div class="hint">키는 이 브라우저에만 저장되며 Anthropic 외 어디로도 전송되지 않습니다.
+      <a href="/privacy" style="color:var(--accent)">개인정보처리방침</a></div>
+
+    <div id="drop" style="margin-top:16px">
+      <strong>PDF를 여기에 끌어다 놓으세요</strong>
+      <span>또는 </span><button class="btn sm" id="pick">파일 선택</button>
+      <input id="file" type="file" accept="application/pdf" class="hidden">
+    </div>
+    <div id="pages"></div>
+    <div class="row" style="margin-top:14px">
+      <button class="btn primary" id="run" disabled>선택한 쪽 읽기 시작</button>
+      <span class="hint" id="pickHint" style="margin:0"></span>
+    </div>
+  </section>
+
+  <section class="card hidden" id="progress">
+    <h2>② 읽는 중</h2>
+    <div class="bar"><i id="barFill"></i></div>
+    <div id="log"></div>
+  </section>
+
+  <section class="hidden" id="reviewWrap">
+    <div class="card" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+      <h2 style="margin:0">③ 검수 · 내보내기</h2>
+      <span class="hint" id="revStat" style="margin:0"></span>
+      <span style="flex:1"></span>
+      <button class="btn" id="backBtn">처음으로</button>
+      <button class="btn primary" id="dlBtn">hwpx 내려받기</button>
+    </div>
+    <div class="review">
+      <div class="pane">
+        <div class="head">
+          <span>원본</span>
+          <select id="pageSel" style="border:1px solid var(--line);border-radius:6px;padding:2px 6px"></select>
+          <span class="spacer"></span>
+          <span class="hint" style="margin:0">수식을 눌러 고치세요</span>
+        </div>
+        <div id="origWrap"><img id="origImg" alt="원본 페이지"></div>
+      </div>
+      <div class="pane">
+        <div class="head">
+          <span>복원 결과</span>
+          <span class="spacer"></span>
+          <label class="brk" style="font-size:11.5px;color:var(--ink2);font-weight:400">
+            <input type="checkbox" id="onlyPage" checked> 이 쪽만 보기
+          </label>
+        </div>
+        <div class="body" id="blocks"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- pdf.js·MathJax 는 CDN 이 아니라 여기서 직접 호스팅한다.
+     CSP 의 script-src 를 'self' 하나로 좁히기 위해서다(외부 CDN 이 섞이면
+     "검증되지 않은 스크립트 출처"로 잡힌다). 덤으로 CDN 변조·장애의 영향도 없다. -->
+<script src="vendor/pdfjs/pdf.min.js"></script>
+<script src="mathjax-config.js?v=202609101027"></script>
+<script src="vendor/mathjax/tex-mml-chtml.min.js" id="MathJax-script" async></script>
+<script src="lib/zip.js?v=202609101027"></script>
+<script src="lib/eqwidth.js?v=202609101027"></script>
+<script src="lib/hwpx.js?v=202609101027"></script>
+<script src="lib/tex2hwp.js?v=202609101027"></script>
+<script src="template.js?v=202609101027"></script>
+<script src="app.js?v=202609101027"></script>
+</body>
+</html>

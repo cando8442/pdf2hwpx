@@ -1,0 +1,12 @@
+# 소스는 LF 로 고정한다. 윈도우에서 작업하다 파일 전체가 CRLF 로 바뀌면
+# 실제로 한 글자도 안 고쳤는데 전부 바뀐 것처럼 보여 diff 를 읽을 수 없게 된다.
+* text=auto eol=lf
+
+# 아래는 바이너리 — 줄바꿈을 건드리면 파일이 깨진다.
+*.hwpx binary
+*.hwp  binary
+*.pdf  binary
+*.png  binary
+*.jpg  binary
+*.woff binary
+*.woff2 binary

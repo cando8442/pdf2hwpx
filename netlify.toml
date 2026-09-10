@@ -1,0 +1,28 @@
+[build]
+  command = "node tools/sync-lib.js"
+  publish = "web"
+
+# 보안 헤더.
+# CSP 를 좁히려고 인라인 <script> 는 mathjax-config.js 로 빼 두었다 —
+# script-src 에 'unsafe-inline' 을 열지 않기 위해서다.
+# style-src 의 'unsafe-inline' 은 남는다: MathJax 가 렌더할 때 스타일을 직접 주입하고
+# 화면 곳곳에 style="..." 속성이 있어 이건 뺄 수 없다.
+# pdf.js·MathJax·수학 글꼴 22종은 web/vendor/ 에 직접 두었다. 그래서 script-src 가
+# 'self' 하나로 끝난다 — 외부 CDN 이 섞이면 "검증되지 않은 스크립트 출처"로 잡힌다.
+# 웹글꼴(Noto Sans KR)만 구글에서 받으므로 style-src/font-src 에 구글 도메인이 남는다.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://api.anthropic.com; worker-src 'self' blob:; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'"
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "no-referrer"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+    Cross-Origin-Opener-Policy = "same-origin"
+
+# 개인정보처리방침은 확장자 없이도 열려야 한다 (스캐너와 링크가 /privacy 를 본다).
+[[redirects]]
+  from = "/privacy"
+  to = "/privacy.html"
+  status = 200

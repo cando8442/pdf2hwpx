@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>개인정보처리방침 — PDF → 한글(hwpx) 변환기</title>
+<meta name="description" content="PDF → 한글(hwpx) 변환기의 개인정보처리방침. 서버가 없어 이용자 정보를 수집·저장하지 않으며, 변환에 필요한 페이지 이미지만 이용자의 API 키로 AI 판독 서비스에 전송합니다.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f4f5f7; --panel:#fff; --line:#e2e5ea;
+    --ink:#1a1d21; --ink2:#5b636d; --ink3:#8d959f; --accent:#1f5f8b; --accent-soft:#e8f1f8;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.75;
+       font-family:"Noto Sans KR",-apple-system,"Segoe UI",sans-serif;font-size:14.5px}
+  header{background:var(--panel);border-bottom:1px solid var(--line);padding:16px 22px;
+         display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  header h1{margin:0;font-size:16px;font-weight:700}
+  header a{color:var(--accent);font-size:12.5px;text-decoration:none}
+  header a:hover{text-decoration:underline}
+  main{max-width:860px;margin:0 auto;padding:26px 22px 70px}
+  .lead{background:var(--accent-soft);border:1px solid #d4e5f0;border-radius:10px;
+        padding:16px 18px;margin-bottom:24px}
+  .lead b{color:var(--accent)}
+  section{background:var(--panel);border:1px solid var(--line);border-radius:10px;
+          padding:18px 22px;margin-bottom:14px}
+  h2{font-size:15px;margin:0 0 12px;display:flex;align-items:center;gap:9px}
+  .no{display:inline-flex;align-items:center;justify-content:center;width:23px;height:23px;
+      background:var(--accent);color:#fff;border-radius:6px;font-size:12px;flex:none}
+  p{margin:0 0 10px}
+  ul{margin:0 0 10px;padding-left:20px}
+  li{margin-bottom:5px}
+  table{border-collapse:collapse;width:100%;font-size:13.5px;margin-bottom:10px}
+  th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top}
+  th{background:#fafbfc;color:var(--ink2);font-weight:500;white-space:nowrap;width:132px}
+  .tblwrap{overflow-x:auto}
+  .mono{font-family:ui-monospace,Consolas,monospace;font-size:13px}
+  .note{color:var(--ink2);font-size:13px}
+  footer{color:var(--ink3);font-size:12.5px;text-align:center;padding:8px}
+</style>
+</head>
+<body>
+<header>
+  <h1>개인정보처리방침</h1>
+  <span class="note">PDF → 한글(hwpx) 변환기</span>
+  <span style="flex:1"></span>
+  <a href="/">← 변환기로 돌아가기</a>
+</header>
+
+<main>
+  <div class="lead">
+    <p style="margin:0"><b>이 서비스는 서버가 없습니다.</b> 모든 처리가 이용자의 브라우저 안에서 일어나며,
+    제작자는 이용자의 파일도 개인정보도 수집하거나 보관하지 않습니다. 다만 수식을 판독하기 위해
+    <b>이용자가 직접 입력한 API 키로</b> 변환할 페이지 이미지를 AI 판독 서비스에 보내는 과정이 있어,
+    그 내용을 아래에 밝힙니다.</p>
+  </div>
+
+  <section>
+    <h2><span class="no">1</span>수집하는 개인정보와 수집 방법</h2>
+    <p>이 서비스는 회원가입·로그인이 없으며 <b>개인정보를 수집하지 않습니다.</b>
+    이름·학번·연락처를 입력받는 곳이 없고, 접속 기록을 남기는 서버도 두지 않습니다.</p>
+    <p>다만 서비스를 쓰려면 아래 두 가지가 <b>이용자 브라우저에만</b> 저장됩니다.
+    이 값은 제작자에게 전송되지 않으며 제작자는 볼 수 없습니다.</p>
+    <div class="tblwrap">
+      <table>
+        <tbody>
+          <tr><th>저장 항목</th><td>Anthropic API 키, 선택한 AI 모델 이름</td></tr>
+          <tr><th>저장 위치</th><td>이용자 기기의 브라우저 저장소(localStorage)<span class="mono"> pdf2hwpx.key / pdf2hwpx.model / pdf2hwpx.remember</span></td></tr>
+          <tr><th>저장 목적</th><td>다시 방문했을 때 키를 매번 입력하지 않게 하기 위함</td></tr>
+          <tr><th>저장하지 않기</th><td>준비 화면의 <b>“이 브라우저에 키 기억하기”</b> 체크를 해제하면 저장하지 않습니다</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">변환에 넣은 PDF 파일 자체는 브라우저 메모리에서만 다뤄지며 어디에도 저장되지 않습니다.
+    탭을 닫으면 사라집니다.</p>
+  </section>
+
+  <section>
+    <h2><span class="no">2</span>처리 목적</h2>
+    <ul>
+      <li>PDF 학습지를 한글 문서(hwpx)로 변환하는 것, 그 하나의 목적으로만 처리합니다.</li>
+      <li>광고·마케팅·프로파일링·통계 분석에 이용하지 않습니다.</li>
+      <li>접속 통계나 이용 행태를 수집하는 분석 도구(Google Analytics 등)를 넣지 않았습니다.</li>
+      <li>쿠키를 사용하지 않습니다.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><span class="no">3</span>보유 및 이용 기간</h2>
+    <div class="tblwrap">
+      <table>
+        <tbody>
+          <tr><th>API 키·모델 선택</th><td>이용자가 지울 때까지 그 브라우저에 남습니다. <b>“키 지우기”</b> 버튼이나 브라우저의 사이트 데이터 삭제로 즉시 지울 수 있습니다.</td></tr>
+          <tr><th>변환한 PDF·결과 파일</th><td>브라우저 메모리에만 존재하며 탭을 닫으면 사라집니다. 서버에 남지 않습니다.</td></tr>
+          <tr><th>제작자 보유분</th><td><b>없음.</b> 제작자는 어떤 데이터도 받지 않으므로 보유하는 것이 없습니다.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="no">4</span>제3자 제공</h2>
+    <p>이용자의 개인정보를 제3자에게 <b>제공하지 않습니다.</b> 판매·대여·공유하는 일이 없습니다.</p>
+  </section>
+
+  <section>
+    <h2><span class="no">5</span>처리 위탁 및 국외 이전</h2>
+    <p>서비스 운영에 다음 두 곳을 이용합니다.</p>
+    <div class="tblwrap">
+      <table>
+        <tbody>
+          <tr>
+            <th>Netlify, Inc.</th>
+            <td>웹사이트 호스팅(미국). 정적 파일을 내려주는 역할만 하며, 이 서비스는 서버로 데이터를 보내지 않습니다.
+            접속 시 통상적인 웹 요청 기록(IP 등)이 호스팅 사업자 측에 남을 수 있습니다.</td>
+          </tr>
+          <tr>
+            <th>Anthropic PBC</th>
+            <td>AI 수식 판독(미국). <b>이용자가 “읽기 시작”을 누른 경우에만</b>, 선택한 PDF 페이지의 이미지가
+            <span class="mono">api.anthropic.com</span> 으로 전송되어 수식이 판독됩니다.
+            전송은 <b>이용자 자신의 API 키</b>로 이용자 브라우저에서 직접 이루어지며 제작자를 거치지 않습니다.
+            전송된 내용의 취급은 Anthropic 의 정책을 따릅니다.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">따라서 <b>개인정보가 담긴 문서를 넣지 마시기 바랍니다.</b> 이 도구는 교사가 만든 학습지·문제지를
+    변환하기 위한 것이며, 학생의 이름·답안 등이 담긴 자료를 넣는 용도로 만들어지지 않았습니다.</p>
+  </section>
+
+  <section>
+    <h2><span class="no">6</span>정보주체의 권리와 행사 방법</h2>
+    <p>이 서비스는 제작자 측에 보관하는 개인정보가 없으므로, 저장된 값에 대한 권리는 이용자가
+    자신의 브라우저에서 직접, 즉시 행사할 수 있습니다.</p>
+    <ul>
+      <li><b>열람</b> — 준비 화면의 키 입력란에서 저장된 값을 확인할 수 있습니다.</li>
+      <li><b>정정</b> — 입력란의 값을 고치면 즉시 반영됩니다.</li>
+      <li><b>삭제</b> — <b>“키 지우기”</b> 버튼을 누르면 즉시 삭제됩니다.</li>
+      <li><b>처리 정지</b> — <b>“이 브라우저에 키 기억하기”</b> 체크를 해제하면 이후 저장하지 않습니다.</li>
+    </ul>
+    <p class="note">그 밖의 문의나 이의 제기는 아래 8항의 보호책임자에게 하실 수 있습니다.</p>
+  </section>
+
+  <section>
+    <h2><span class="no">7</span>안전성 확보 조치</h2>
+    <ul>
+      <li><b>수집하지 않는 것이 가장 큰 안전조치입니다.</b> 서버와 데이터베이스를 두지 않아 유출될 보관 정보가 없습니다.</li>
+      <li>모든 통신은 HTTPS 로 암호화되며, HSTS 로 평문 접속을 막습니다.</li>
+      <li>콘텐츠 보안 정책(CSP)으로 외부 스크립트 주입을 차단하고, 통신 대상을 판독 서비스로 한정합니다.</li>
+      <li>다른 사이트가 이 화면을 몰래 끼워 넣지 못하도록 클릭재킹 방어를 적용했습니다.</li>
+      <li>API 키는 코드에 넣지 않으며, 이용자 브라우저 저장소에만 두고 제작자에게 전송하지 않습니다.</li>
+      <li>카메라·마이크·위치 등 브라우저 권한을 일절 요청하지 않으며 정책으로도 차단했습니다.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><span class="no">8</span>개인정보 보호책임자</h2>
+    <div class="tblwrap">
+      <table>
+        <tbody>
+          <tr><th>구분</th><td>개인정보 보호책임자 (제작·운영 담당 교사)</td></tr>
+          <tr><th>소속</th><td>서울세종고등학교 수학과</td></tr>
+          <tr><th>성명</th><td>김은상</td></tr>
+          <tr><th>전자우편</th><td class="mono">cando8442@seoulsejong.sen.hs.kr</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">개인정보 침해로 인한 상담·신고가 필요하시면 개인정보침해신고센터(privacy.kisa.or.kr, 국번없이 118),
+    개인정보 분쟁조정위원회(kopico.go.kr, 1833-6972)에 문의하실 수 있습니다.</p>
+  </section>
+
+  <section>
+    <h2><span class="no">9</span>아동의 개인정보 보호</h2>
+    <p>이 도구는 <b>교사가 수업 자료를 만들기 위해 쓰는 도구</b>이며 학생이 직접 이용하는 것을 상정하지 않습니다.
+    만 14세 미만 아동으로부터 개인정보를 수집하지 않으며, 애초에 누구에게서도 개인정보를 수집하지 않습니다.</p>
+  </section>
+
+  <section>
+    <h2><span class="no">10</span>방침의 변경</h2>
+    <p>이 방침을 고칠 때에는 이 페이지에 변경 내용과 시행일을 함께 알립니다.</p>
+    <div class="tblwrap">
+      <table>
+        <tbody>
+          <tr><th>시행일</th><td>2026년 9월 10일</td></tr>
+          <tr><th>개정 이력</th><td>2026년 9월 10일 — 최초 제정</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<footer>서울세종고등학교 수학과 · PDF → 한글(hwpx) 변환기</footer>
+</body>
+</html>
