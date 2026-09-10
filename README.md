@@ -3,6 +3,10 @@
 PDF 학습지를 **한글 네이티브 수식이 살아있는 hwpx**로 바꾸는 정적 웹앱.
 서버가 없다. 브라우저 하나에서 전부 돌아간다.
 
+**바로 쓰기 → https://pdf2hwpx.netlify.app**
+저장소 → https://github.com/cando8442/pdf2hwpx
+깃 사용법 → [CONTRIBUTING.md](CONTRIBUTING.md)
+
 ```
 PDF → 페이지 이미지(pdf.js) → [Claude 비전] → LaTeX → [tex2hwp] → 한글수식 → hwpx
                                  ↑ 여기만 부정확        ↑ 여기부터 결정론적
@@ -41,6 +45,12 @@ python -m http.server 8899 --directory web
 ## 배포
 
 Netlify 정적 배포. `netlify.toml`이 `publish = "web"`, 빌드는 `node tools/sync-lib.js`.
+`sync-lib.js`는 `src/`를 `web/lib/`로 복사하면서 script 태그에 `?v=<시각>` 캐시 무효화
+스탬프를 새로 박고 화면 오른쪽 위 버전 표시도 갱신한다. 고친 뒤에도 브라우저가 옛
+스크립트를 계속 쓰는 사고를 막기 위한 것이다.
+
+보안 헤더도 `netlify.toml`에 있다. CSP `script-src 'self'`를 지키려고 pdf.js·MathJax를
+`web/vendor/`에 자체 호스팅한다 — 외부 CDN이 섞이면 CSP가 미충족으로 잡힌다.
 
 ## API 키
 
